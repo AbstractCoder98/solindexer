@@ -1,0 +1,35 @@
+# Use postgres/example user/password credentials
+version: '3.1'
+
+services:
+
+  db:
+    container_name: postgres
+    image: postgres
+    restart: always
+    ports:
+      - 3900:5432
+    environment:
+      DATABASE_HOST: 127.0.0.1
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: qwerty
+      POSTGRES_DB: solindexer
+    volumes:
+      - ./pgdata:/var/lib/postgres/data
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "alejandro.penagos@fluidchains.com"
+      PGADMIN_DEFAULT_PASSWORD: "admin"
+    ports:
+      - 80:80
+    depends_on:
+      - db
+
+  # web:
+  #   image: indexer-api
+  #   ports:
+  #     - 8086:8086
+  #   depends_on:
+  #     - db
